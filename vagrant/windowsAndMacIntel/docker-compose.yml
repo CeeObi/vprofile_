@@ -1,0 +1,49 @@
+# Docker compose file basically used to run the Dockerfile...instead of eg "docker build -t <name=vprod>:<tag>  ." and "docker push vprod ceeobi/vprofiledb"
+# to build one by one in the terminal, use docker compose to build and push several containers at once. where each container with its name is defined under the services section as below:
+version: "3.8"
+
+#create containers
+services:
+    vprodb:
+        build: ./Docker-files/db
+        image: ceeobi/vprofiledb #Repository Image name when pushed to docker hub
+        container_name: vprodb
+        ports:
+            - "3306:3306"
+        volumes:
+            - vprodbdata:/var/lib/mysql
+        environment:
+            - MYSQL_ROOT_PASSWORD="vprodbpass"
+
+    vprocache01:
+        image: memcached
+        container_name: vprocache01
+        ports:
+            - "11211:11211"
+
+    vpromq01:
+        image: rabbitmq
+        container_name: vpromq01
+        ports:
+            - 15672:15672
+
+    vproapp:
+        build: ./Docker-files/app
+        image: ceeobi/vprofileapp #Repository Image name when pushed to docker hub
+        container_name: vproapp
+        ports:
+            - "8080:8080"
+        volumes:
+            - vproappdata:/usr/local/tomcat/webapps
+
+    vproweb:
+        build: ./Docker-files/web
+        image: ceeobi/vprofileweb #Repository Image name when pushed to docker hub
+        container_name: vproweb
+        ports:
+            - "80:80"
+
+# create volumes
+volumes:
+    vprodbdata: {} #it creates volume in the docker engine itself
+    vproappdata: {}
