@@ -16,4 +16,5 @@ RUN rm -rf /usr/local/tomcat/webapps/*
 COPY --from=ARTIFACT_BUILD_IMAGE vprofile-project/target/vprofile-v2.war /usr/local/tomcat/webapps/ROOT.war
 
 EXPOSE 8080
-CMD ["catalina.sh", "run"]
+#CMD tells docker what to run. so when you write "docker run", you are indirectly typing "catalina.sh run". Also ENTRYPOINT is like CMD but ENTRYPOINT is CMD that accepts arguments. It takes priority over CMD
+CMD ["catalina.sh", "run"] 
