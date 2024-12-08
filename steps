@@ -1,0 +1,8 @@
+create bucket in aws eg,"terra-eks12"and provide this name in the bucket section in the teraform.tf file
+
+Imlementthe other files as required.
+
+then run
+-terraform init
+-terraform plan 
+-terraform apply
